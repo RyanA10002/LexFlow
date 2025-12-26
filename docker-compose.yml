@@ -1,0 +1,48 @@
+version: "3.8"
+services:
+  redis:
+    image: redis:7-alpine
+    ports: ["6379:6379"]
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    volumes:
+      - ./backend:/app
+      - ./notebooks:/notebooks
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - CHROMA_SERVER=${CHROMA_SERVER}
+      - LANCEDB_ENABLED=${LANCEDB_ENABLED:-false}
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+  worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    command: celery -A backend.tasks worker --loglevel=info --concurrency=1
+    volumes:
+      - ./backend:/app
+      - ./notebooks:/notebooks
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - CHROMA_SERVER=${CHROMA_SERVER}
+      - LANCEDB_ENABLED=${LANCEDB_ENABLED:-false}
+    depends_on:
+      - redis
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    volumes:
+      - ./frontend:/usr/src/app
+    ports:
+      - "3000:3000"
+    environment:
+      - VITE_API_BASE=http://localhost:8000
+    depends_on:
+      - backend
