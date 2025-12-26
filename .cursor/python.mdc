@@ -1,0 +1,31 @@
+# Python Development Standards — LexFlow CRM
+
+## Purpose
+This document defines Python coding standards, architectural conventions, and best practices for the LexFlow CRM backend and services.
+
+LexFlow prioritizes:
+- Readability
+- Explicitness
+- Security
+- Maintainability
+- Compliance-friendly design
+
+---
+
+## Python Version
+- Python **3.11+** required
+- No legacy Python 2 compatibility
+
+---
+
+## Code Style
+- Follow **PEP 8**
+- Line length: **88 characters** (Black-compatible)
+- Use **Black** for formatting
+- Use **isort** for imports
+- Use **flake8** for linting
+
+```bash
+black .
+isort .
+flake8
