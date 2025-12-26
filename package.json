@@ -1,0 +1,19 @@
+{
+    "name": "nextgen-notebook-frontend",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+      "start": "vite",
+      "build": "vite build",
+      "preview": "vite preview"
+    },
+    "dependencies": {
+      "react": "^18.0.0",
+      "react-dom": "^18.0.0",
+      "axios": "^1.4.0"
+    },
+    "devDependencies": {
+      "vite": "^4.0.0",
+      "@vitejs/plugin-react": "^3.0.0"
+    }
+  }
